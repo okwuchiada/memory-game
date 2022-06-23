@@ -1,23 +1,15 @@
-import logo from './logo.svg';
+import { useState } from "react"
 import './App.css';
+import Home from './components/Home';
+
 
 function App() {
+
+  const [gameMode, setGameMode] = useState(false);
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className=''>
+      <h2 className='font-semibold text-2xl text-center mb-4 uppercase'>Memory Game</h2>
+      <Home gameMode={gameMode} setGameMode={setGameMode} />
     </div>
   );
 }
