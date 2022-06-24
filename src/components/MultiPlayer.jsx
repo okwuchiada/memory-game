@@ -91,15 +91,15 @@ const MultiPlayer = () => {
 
 
   return (
-    <div className="flex items-center justify-center w-full h-full">
+    <div className="flex lg:flex-row flex-col items-center justify-center w-full h-full">
       <div className='game-container h-[500px] w-screen lg:w-2/3 grid grid-cols-4 gap-2 px-4 lg:p-1'>
         {cards.map((card, index) => {
           return <Card key={index} id={index} card={card} handleClick={handleClick} />
         })}
 
       </div>
-      <div className='flex flex-col items-center justify-center w-1/6'>
-        <div className='mt-2 lg:mt-4 text-xl font-bold flex justify-evenly items-center w-full'>
+      <div className='flex flex-col items-center justify-center lg:w-1/6 w-full'>
+        <div className='mt-2 lg:mt-4 text-xl font-bold flex  justify-evenly items-center w-full'>
           <p>Score: {score}</p>
           <p>Turns: {moves}</p>
         </div>
