@@ -1,9 +1,9 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import Card from './Card'
 
 
 
-const SinglePlayer = () => {
+const SinglePlayer = ({ lonePlayer }) => {
     const images = [
         { "src": "/images/pexels-1.jpg", id: 1, status: "" },
         { "src": "/images/pexels-1.jpg", id: 1, status: "" },
@@ -24,11 +24,18 @@ const SinglePlayer = () => {
     ]
 
     const [cards, setCards] = useState(images.sort(() => Math.random() - 0.5))
-
     const [prev, setPrev] = useState(-1)
     const [restart, setRestart] = useState(false)
     const [score, setScore] = useState(0)
     const [moves, setMoves] = useState(0)
+
+    useEffect(() => {
+
+        if (score === 8) {
+            setRestart(true)
+        }
+        
+    }, [score])
 
     const checkId = (selectedId) => {
         if (cards[selectedId].id === cards[prev].id) {
@@ -37,9 +44,9 @@ const SinglePlayer = () => {
             setCards([...cards])
             setScore(score + 1)
             setPrev(-1)
-            if (score === 7) {
-                setRestart(true)
-            }
+            // if (score === 7) {
+            //     setRestart(true)
+            // }
         } else {
             cards[selectedId].status = "unmatched"
             cards[prev].status = "unmatched"
@@ -54,18 +61,19 @@ const SinglePlayer = () => {
     }
 
     const handleClick = (id) => {
-        if (prev === -1) {
-            cards[id].status = "flipped"
-            setMoves(moves + 1)
-            setCards([...cards])
-            setPrev(id)
-            if (moves >= 20) {
-                setRestart(true)
+        if (cards[id].status !== "matched") {
+            if (prev === -1) {
+                cards[id].status = "flipped"
+                setMoves(moves + 1)
+                setCards([...cards])
+                setPrev(id)
+                // if (moves >= 20) {
+                //     setRestart(true)
+                // }
+            } else {
+                checkId(id)
             }
-        } else {
-            checkId(id)
         }
-
     }
 
     const restartGame = () => {
@@ -83,10 +91,17 @@ const SinglePlayer = () => {
                     return <Card key={index} id={index} card={card} handleClick={handleClick} />
                 })}
             </div>
-            <div className='mt-2 lg:mt-4 text-xl font-bold w-full flex justify-evenly items-center'>
+            {   restart &&  <div className='mt-2 lg:mt-4 text-xl font-bold w-full flex justify-evenly items-center'>
+                    Nice one {lonePlayer}, you scored {score} points in {moves} moves
+                    <br/>
+                </div>
+            }
+            { !restart && <div className='mt-2 lg:mt-4 text-xl font-bold w-full flex justify-evenly items-center'>
+                <p>Player: {lonePlayer}</p>
                 <p>Score: {score}</p>
                 <p>Turns: {moves}</p>
-            </div>
+                </div> 
+            }
             {restart && <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-1 mb-1" onClick={restartGame}>
                 Restart
             </button>}
